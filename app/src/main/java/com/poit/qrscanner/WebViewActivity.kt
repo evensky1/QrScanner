@@ -14,14 +14,18 @@ class WebViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
-        webView = findViewById(R.id.webView)
-        webView.webViewClient = WebViewClient()
-        webView.loadUrl(intent?.getStringExtra("url") ?: "https://www.google.com")
-        currentLocation = intent.getStringExtra("currLoc") ?: ""
-        webView.settings.javaScriptEnabled = true
-        webView.settings.setSupportZoom(true)
 
-        onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+        webView = findViewById<WebView?>(R.id.webView).apply {
+            webViewClient = WebViewClient()
+            settings.javaScriptEnabled = true
+            settings.setSupportZoom(true)
+        }
+
+        webView.loadUrl(intent?.getStringExtra("url") ?: "https://www.google.com")
+
+        currentLocation = intent.getStringExtra("currLoc") ?: ""
+
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 intent.putExtra("currLoc", currentLocation)

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private val barLauncher = registerForActivityResult(ScanContract()) {
         if (it.contents != null) {
+            Toast.makeText(this, it.contents, Toast.LENGTH_LONG).show()
             val intent = Intent(this@MainActivity, WebViewActivity::class.java)
             intent.putExtra("url", it.contents)
             intent.putExtra("currLoc", urlEdit.text.toString())
