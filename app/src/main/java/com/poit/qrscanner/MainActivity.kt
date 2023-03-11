@@ -22,10 +22,11 @@ class MainActivity : AppCompatActivity() {
 
     private val barLauncher = registerForActivityResult(ScanContract()) {
         if (it.contents != null) {
+
             Toast.makeText(this, it.contents, Toast.LENGTH_LONG).show()
-            val intent = Intent(this@MainActivity, WebViewActivity::class.java)
+
+            val intent = Intent(this, WebViewActivity::class.java)
             intent.putExtra("url", it.contents)
-            intent.putExtra("currLoc", urlEdit.text.toString())
             startActivity(intent)
             this.onPause()
         }
@@ -35,26 +36,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        scanBtn = findViewById(R.id.scanBtn)
-        scanBtn.setOnClickListener {
-            scanCode()
+        scanBtn = findViewById<Button?>(R.id.scanBtn).apply {
+            setOnClickListener { scanCode() }
         }
 
-        genBtn = findViewById(R.id.generateBtn)
-        genBtn.setOnClickListener {
-            genCode()
+        genBtn = findViewById<Button?>(R.id.generateBtn).apply {
+            setOnClickListener { genCode() }
         }
 
         urlEdit = findViewById(R.id.urlEdit)
-        urlEdit.setText(intent.getStringExtra("currLoc") ?: "")
-        genCode()
-
         qrView = findViewById(R.id.qrImage)
     }
 
     private fun scanCode() {
         val scanOptions = ScanOptions()
-            .setPrompt("Volume up to flash on")
+            .setPrompt("Volume up/down to flash on/off")
             .setBeepEnabled(true)
             .setOrientationLocked(true)
             .setCaptureActivity(CodeCaptureActivity::class.java)
